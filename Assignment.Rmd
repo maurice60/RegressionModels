@@ -6,7 +6,8 @@ output: pdf_document
 ---
 ```{r}
 boxplot(mpg ~ am, data=mtcars)
-```
+```   
+
 ````{r}
 t.test(mpg ~ am, data=mtcars)
 ```  
@@ -18,7 +19,12 @@ summary(fit)$coef
 
 ```{r results='hide'}
 fit1 <- step(fit,  direction="backward")
-```
+```  
+
 ```{r}
 summary(fit1)$coef
+```  
+
+```{r}
+plot(fit1, which=2)
 ```  
