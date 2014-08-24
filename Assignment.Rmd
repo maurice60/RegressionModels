@@ -1,30 +1,47 @@
 ---
-title: "Report on Automatic Versus Manual Transmission Cars"
+output: pdf_document
+---
+---
+title: "Report on Fuel Economy of Automatic and Manual Transmission Cars"
 author: "M Williams"
 date: "21 August 2014"
 output: pdf_document
----
+---  
+##Summary  
+In the small sample of cars we have in the data, the mean mpg figure is certanly lower for manual transmission cars. Manual cars mean is 17.15 mpg; automatic cars 24.39 mpg, a difference of 7.24 mpg. We have 95% confidence  that the actual average difference lies between 3.21 and 11.28 mpg. There are, however other factors which need to be considered. Vehicle weight has more significance in the regression plot, as does the time taken for a quarter mile (which is correlated with gear and axle ratios, engine displacement, number of cylinders and horsepower).  
+
+##Analysis  
+An initial boxplot of mpg and transmission type shows the difference in means  
 ```{r}
+mtcars$am <- factor(mtcars$am, levels=c(0,1), labels=c("Manual", "Automatic"))
 boxplot(mpg ~ am, data=mtcars)
 ```   
-
+  
+  
+  
+A t-test confirms that the difference in means is real, and provides a 95% confidence interval for it.  
 ````{r}
 t.test(mpg ~ am, data=mtcars)
 ```  
-
+  
+A fit of all variables gives:  
 ```{r}
 fit <- lm(mpg ~ ., data = mtcars)
 summary(fit)$coef
 ```  
-
+  
+This can be refined to three variables which have the lowest correlation:  
 ```{r results='hide'}
 fit1 <- step(fit,  direction="backward")
-```  
-
+```
 ```{r}
 summary(fit1)$coef
 ```  
+  
+Showing that mpg decreases by 3.9 for each ton increse in weight, increases by 1.3 for each second of quarter mile time and increases between manual and automatic transmission.  
+
+A final plot of residuals vs. leverage appears to show no outliers in the data.  
 
 ```{r}
-plot(fit1, which=2)
+plot(fit1, which=5)
 ```  
